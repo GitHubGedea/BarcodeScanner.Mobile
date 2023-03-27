@@ -11,11 +11,6 @@ using BarcodeScanner.Mobile.Platforms.Android;
 using Google.Common.Util.Concurrent;
 using Java.Lang;
 using Java.Util.Concurrent;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Exception = System.Exception;
 
 namespace BarcodeScanner.Mobile
@@ -37,11 +32,12 @@ namespace BarcodeScanner.Mobile
             return previewView;
         }
 
-        
+
         private void Connect()
         {
-            if (DeviceInfo.Current.DeviceType == DeviceType.Virtual)
-                return;
+            //Rimosso perché fa crashare l'emulatore
+            //if (DeviceInfo.Current.DeviceType == DeviceType.Virtual)
+            //    return;
             _cameraExecutor = Executors.NewSingleThreadExecutor();
             _cameraFuture = ProcessCameraProvider.GetInstance(Context);
             _cameraFuture.AddListener(new Runnable(CameraCallback), ContextCompat.GetMainExecutor(Context));
@@ -135,7 +131,7 @@ namespace BarcodeScanner.Mobile
         public void HandleTorch()
         {
             if (_camera == null || VirtualView == null || !_camera.CameraInfo.HasFlashUnit) return;
-           
+
             _camera.CameraControl.EnableTorch(VirtualView.TorchOn);
         }
         private bool IsTorchOn()
@@ -181,7 +177,7 @@ namespace BarcodeScanner.Mobile
 
             _isDisposed = true;
         }
-     
+
         private void ClearCameraProvider()
         {
             try
